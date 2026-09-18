@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  This app lets the stream URL be changed at runtime (see Edit Stream URL in the app),
+  so cleartext (plain HTTP) traffic is allowed for all hosts, not just raspberrypi.local.
+  This is safe here because the app is only ever used to reach devices on your own
+  local network, not the public internet.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

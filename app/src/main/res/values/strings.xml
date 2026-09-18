@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Pi Radio</string>
+    <string name="station_name">IR- Radio</string>
+    <string name="status_connecting">Connecting…</string>
+    <string name="status_playing">Playing</string>
+    <string name="status_paused">Paused</string>
+    <string name="status_buffering">Buffering…</string>
+    <string name="status_error">Connection error — tap Reconnect</string>
+    <string name="reconnect">Reconnect</string>
+    <string name="bluetooth_settings">Bluetooth</string>
+    <string name="audio_route_speaker">Audio output: Phone speaker</string>
+    <string name="audio_route_bluetooth">Audio output: Bluetooth</string>
+    <string name="edit_stream">Edit Stream URL</string>
+    <string name="now_playing_default">Live Stream</string>
+</resources>
