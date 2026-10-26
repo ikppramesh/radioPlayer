@@ -16,7 +16,9 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
         }
     }
 
@@ -36,4 +38,6 @@ dependencies {
     implementation("com.google.android.material:material:1.14.0")
     implementation("androidx.media3:media3-exoplayer:1.11.1")
     implementation("androidx.media3:media3-session:1.11.1")
+
+    testImplementation("junit:junit:4.13.2")
 }

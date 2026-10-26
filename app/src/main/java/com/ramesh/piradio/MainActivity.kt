@@ -13,6 +13,7 @@ import android.provider.Settings
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -109,29 +110,34 @@ class MainActivity : AppCompatActivity() {
             setPadding(pad, pad, pad, pad)
         }
         val nameInput = EditText(this).apply {
-            hint = "Station name"
+            hint = getString(R.string.hint_station_name)
             setText(RadioPrefs.getStationName(context))
         }
         val urlInput = EditText(this).apply {
-            hint = "Stream URL, e.g. http://raspberrypi.local:8000/radio.mp3"
+            hint = getString(R.string.hint_stream_url)
             setText(RadioPrefs.getUrl(context))
         }
         container.addView(nameInput)
         container.addView(urlInput)
 
         AlertDialog.Builder(this)
-            .setTitle("Edit radio stream")
+            .setTitle(R.string.dialog_title_edit_stream)
             .setView(container)
-            .setPositiveButton("Save") { _, _ ->
+            .setPositiveButton(R.string.action_save) { _, _ ->
                 val newUrl = urlInput.text.toString().trim()
                 val newName = nameInput.text.toString().trim()
                     .ifEmpty { getString(R.string.station_name) }
-                if (newUrl.isNotEmpty()) {
+                if (!StreamUrl.isValid(newUrl)) {
+                    Toast.makeText(this, R.string.error_invalid_url, Toast.LENGTH_LONG).show()
+                } else {
+                    if (StreamUrl.isInsecureRemote(newUrl)) {
+                        Toast.makeText(this, R.string.warning_insecure_remote, Toast.LENGTH_LONG).show()
+                    }
                     RadioPrefs.save(this, newUrl, newName)
                     applyNewStream(newUrl, newName)
                 }
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(R.string.action_cancel, null)
             .show()
     }
 
@@ -142,7 +148,7 @@ class MainActivity : AppCompatActivity() {
             .setMediaMetadata(
                 MediaMetadata.Builder()
                     .setTitle(name)
-                    .setArtist("Live Stream")
+                    .setArtist(getString(R.string.artist_live_stream))
                     .build()
             )
             .build()
@@ -177,13 +183,13 @@ class MainActivity : AppCompatActivity() {
         val future = MediaController.Builder(this, sessionToken).buildAsync()
         controllerFuture = future
         future.addListener({
-            val mediaController = future.get()
-            mediaController.addListener(playerListener)
-            if (!mediaController.isPlaying) {
-                if (mediaController.playbackState == Player.STATE_IDLE) mediaController.prepare()
-                mediaController.playWhenReady = true
-                mediaController.play()
+            val mediaController = try {
+                future.get()
+            } catch (e: Exception) {
+                binding.statusText.text = getString(R.string.status_error)
+                return@addListener
             }
+            mediaController.addListener(playerListener)
             updateUiState()
             updateNowPlaying(mediaController.mediaMetadata)
         }, MoreExecutors.directExecutor())

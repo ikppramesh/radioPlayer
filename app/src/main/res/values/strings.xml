@@ -12,4 +12,12 @@
     <string name="audio_route_bluetooth">Audio output: Bluetooth</string>
     <string name="edit_stream">Edit Stream URL</string>
     <string name="now_playing_default">Live Stream</string>
+    <string name="artist_live_stream">Live Stream</string>
+    <string name="dialog_title_edit_stream">Edit radio stream</string>
+    <string name="hint_station_name">Station name</string>
+    <string name="hint_stream_url">Stream URL, e.g. http://raspberrypi.local:8000/radio.mp3</string>
+    <string name="action_save">Save</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="error_invalid_url">Enter a valid http:// or https:// URL</string>
+    <string name="warning_insecure_remote">This is plain HTTP to a non-local host; the stream is not encrypted</string>
 </resources>
